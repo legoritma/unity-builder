@@ -200,6 +200,13 @@ describe('BuildParameters', () => {
       await expect(BuildParameters.create()).rejects.toThrowError();
     });
 
+    it('does not throw error when no license provided and skipActivation defined', async () => {
+      delete process.env.UNITY_LICENSE; // Need to delete this as it is set for every test currently
+      const mockValue = 'true';
+      jest.spyOn(Input, 'skipActivation', 'get').mockReturnValue(mockValue);
+      await expect(BuildParameters.create()).resolves.not.toThrow();
+    });
+
     it('return serial when no license server is provided', async () => {
       const mockValue = '123';
       delete process.env.UNITY_LICENSE; // Need to delete this as it is set for every test currently
